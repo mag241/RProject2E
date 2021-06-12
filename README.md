@@ -1,2 +1,4 @@
 # RProject2E
 How does the size of the gold nano-particle (AuNP) differ in the effectiveness of cellular uptake as measured by principle component analysis between HepG2 and L02 cells? 
+In order to run the code you will need the R notebook. The data used in this file can be found here: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6717860/#CIT0029, specifically looking at figure 6.
+Here is the list of the data in an Excel file which was loaded into R. [AuNPs_Size_Data.xlsx](https://github.com/mag241/RProject2E/files/6641768/AuNPs_Size_Data.xlsx). This file compared the AuNP sizes of L02 and HepG2 cells regarding 5nm, 20 nm and 50 nm sizes and their cellular uptake measured in ng/10^4. With this data you are able to find the p-value and can determine if hypothesis is correct. Once this is done, a bar plot is generated to visually compare the two cell lines and determine how different sizes of AuNP affect cellular uptake into these cells. 
