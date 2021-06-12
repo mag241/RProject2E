@@ -1,0 +1,109 @@
+---
+title: "Size-Dependent AuNP's: P-values"
+output: html_notebook
+---
+_____________
+
+Scientific Question: How does the size of the gold nano-particle (AuNP) differ in the effectiveness of cellular uptake as measured by principle component analysis between HepG2 and L02 cells? 
+
+Background: HepG2 cell is a liver cancer cell line while L02 is a normal liver cancer cell line (Xia 2019). The use of AuNPs have been essential in drug delivery specifically for cancer treatment and discovery. Two suitable reference genes for HepG2 and L02 will be observed, GAPDH for HepG2 and TBP for L02 both for the organism Homo sapiens (Chen 2020). Endocytosis of AuNPs have been found to be dependent on surface coating and particle size (Wang 2010). This means that AuNPs size can affect the cellular uptake rate, ideally a higher cellular uptake is preferable for drug delivery (Wang 2010). In these two cell lines, the accession numbers found in BLAST search are NM_002046 for GAPDH and NM_003194 for TBP. 
+_____________________________________________________________________________________
+Scientific Hypothesis: If the AuNPs size is smaller then 45nm, then there will be an increased rate in the uptake of these nano-particles into both normal and cancerous cell lines.
+
+Method: Here we perform p-value test to prove or disprove the hypothesis and preform a bar plot using the different cell lines, AuNPs sizes, and different cellular re-uptake rates to visualize the different variations present within different sizes of AuNPs. 
+_____________________________________________________________________________________
+Required packages:
+
+1) BioConductor: provides tools for analysis and comprehension of genomic data, giving access to statistical and graphical methods
+2) Rstatix: provides simple and intuitive framework for performing basic statistical tests, including t-test, WIIcoxon test, ANOVA, and correlation analysis
+3) ggplot2: a plotting package that provides tools to create complex plots from data in data frame.It allows for programmatic interface to specify variables in a plot and how they are displayed.
+4) readxl: used to easily import Excel files into R without any external dependencies
+
+Before running the code below, in the console I needed to install the packages using the commands:
+
+```{r}
+install.packages("BioManager")
+install.packages('rstatix')
+install.packages("ggplot2")
+install.packages("readxl")
+
+library(rstatix)
+library(ggplot2)
+library(readxl)
+
+
+```
+
+_____________________________________________________________________________________
+
+Below, this code is responsible for loading in the data values from Excel of the cellular uptake of AuNPs for both HepG2 and L02 cells. The data analyzes 5nm, 20 nm and 50 nm AuNPs to their cellular uptakes.  
+```{r}
+# Loading
+library("readxl")
+# xlsx files
+my_data <- read_excel("AuNPs_Size_Data.xlsx")
+
+```
+_____________________________________________________________________________________
+
+Below we are reading the data values using a t.test command to find the p-values for each of the three AuNPs(nm) size subsets (5nm, 20nm and 50nm). 
+
+```{r}
+#Preforming a t.test on HepG2 cells (x) and L02 cells (y) of AuNPs that are 5 nm. 
+x = c(117, 100, 92, 124, 131)
+y = c(97, 95, 102, 121, 106)
+t.test(x,y)
+```
+```{r}
+#Preforming a t.test on HepG2 cells (x) and L02 cells (y) of AuNPs that are 20 nm. 
+x = c(423, 433, 417, 440, 445)
+y = c(112, 102, 100, 97, 99)
+t.test(x,y)
+```
+```{r}
+#Preforming a t.test on HepG2 cells (x) and L02 cells (y) of AuNPs that are 50 nm. 
+x = c(634, 644, 639, 628, 647)
+y = c(54, 54, 71, 84, 64)
+t.test(x,y)
+```
+
+In this next line of code, I will be looking at he p-value taken from data set in Excel with the quantitative data of AuNPs size and re-uptake rates. The t score is calculated in order to do a paired T test of the two cell lines. The mean is derived for both HepG2 and L02 cells. 
+
+```{r}
+#Here we are loading the data values of the cell lines, HepG2 and L02. Here N=15 for each variable. 
+df <- read.table("clipboard", sep="\t", header=TRUE)
+str(df)
+
+```
+```{r}
+#The means are loaded for each of the cell lines and the t.score is calculated
+df <- read.table("clipboard", sep="\t", header=TRUE)
+str(df)
+```
+```{r}
+#T score calulcated 
+df <-read.table("clipboard", sep="\t", header=TRUE)
+str(df)
+```
+```{r}
+#Here the p-value is calculated using the paired test and values from the data frame above
+p_value=2*pt(q=.509, df=2, lower.tail=FALSE)
+  
+p_value
+```
+
+The following line will look into a bar plot, where the values of each of the AuNPs of the two cell lines are compared. The x-axis will display the three subsets of AuNPs sizes in nm and the y-axis will display the cellular uptake of each of these. 
+
+
+```{r}
+#Loading the bar plot from Excel file
+# Grouped Bar Plot
+H <- c(112.8, 431.6, 638.4, 102.2, 102, 68.2)
+M <- c("5","20","50")
+
+barplot(counts, main="Cellular Uptake Vs AuNPs sizes",
+  xlab="AuNPs Size (nm)", col=c("darkblue","orange"),
+  legend = rownames(counts), beside=TRUE)
+
+```
+From this experiment, the data results indicate that the uptake of AuNPs increased for the HepG2 cells compared to normal cell line, L02. L02 cellular uptake decreased with increased AuNPs size. The p-value is greater than 0.05 calculated from the means of the two cell line cellular uptakes. This means that my hypothesis was incorrect and that there is a difference in the uptake rate of these two cell lines. Moreover, for HepG2 the greater the AuNP size the greater the cellular uptake (ng/10^4).   
